@@ -1,19 +1,19 @@
 # Stayinn — Setup Guide
 
-This guide explains how to set up and run Stayinn locally for development.
+Quick guide to setting up and running Stayinn locally.
 
 ---
 
 ## Requirements
 
-Make sure you have the following installed:
+Install:
 
-* **Node.js** — LTS version recommended
-* **npm** — included with Node.js
+* **Node.js** (LTS recommended)
+* **npm**
 * **Git**
-* A **Firebase** project for authentication and application configuration
+* **Firebase** project
 
-Verify your installations:
+Verify:
 
 ```bash
 node --version
@@ -25,15 +25,8 @@ git --version
 
 ## 1. Clone the Project
 
-Clone the repository:
-
 ```bash
 git clone https://github.com/CodedByManish/Stayinn.git
-```
-
-Move into the project directory:
-
-```bash
 cd Stayinn
 ```
 
@@ -41,21 +34,15 @@ cd Stayinn
 
 ## 2. Install Dependencies
 
-Install all required packages:
-
 ```bash
 npm install
 ```
 
 ---
 
-## 3. Environment Configuration
+## 3. Configure Environment
 
-Create a `.env` file in the project root.
-
-Use `.env.dist` as the reference for the required variables.
-
-Example:
+Create a `.env` file in the project root using `.env.dist` as a reference.
 
 ```env
 VITE_FIREBASE_API_KEY=your_firebase_api_key
@@ -66,39 +53,35 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
 VITE_FIREBASE_APP_ID=your_firebase_app_id
 ```
 
-Do not commit `.env` to Git.
-
 ---
 
-## 4. Firebase Configuration
+## 4. Firebase
 
 Stayinn uses Firebase for authentication and hosting.
 
-The Firebase configuration is handled through:
-
-```text
-firebase.js
-```
-
-The project is configured for the Firebase project:
+The configured project is:
 
 ```text
 stayinn-3a715
 ```
 
-If you are setting up your own Firebase project, update the environment variables with your project's Firebase configuration.
+Firebase configuration is handled in:
+
+```text
+firebase.js
+```
 
 ---
 
 ## 5. Run Locally
 
-Start the Vite development server:
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Open the application in your browser:
+Open:
 
 ```text
 http://localhost:5173
@@ -117,79 +100,35 @@ http://localhost:5173
 
 ---
 
-## Recommended Development Workflow
-
-```text
-Install Dependencies
-        ↓
-Configure Environment
-        ↓
-Start Development Server
-        ↓
-  Make Changes
-        ↓
-Test Application
-        ↓
-Run Production Build
-```
-
-Before pushing changes, verify that:
-
-```bash
-npm run build
-```
-
-completes successfully.
-
----
-
 ## Troubleshooting
 
-### Dependencies are missing
+### Environment Variables
 
-Run:
+Make sure:
 
-```bash
-npm install
-```
+* `.env` is in the project root
+* Variables start with `VITE_`
+* Values are correct
+* The dev server was restarted after changes
 
-Then restart the development server.
+### Firebase Authentication
 
-### Environment variables are not working
+Check that Firebase Authentication is enabled and the required provider is configured.
 
-Check that:
+### Blank Page
 
-* `.env` exists in the project root.
-* Variable names start with `VITE_`.
-* Values are correct.
-* The development server was restarted after changing `.env`.
+Check the browser console for errors.
 
-### Firebase authentication is not working
-
-Verify:
-
-* Firebase configuration values are correct.
-* Firebase Authentication is enabled in the Firebase Console.
-* The configured authentication provider is enabled.
-
-### Application shows a blank page
-
-Check the browser's developer console for JavaScript errors.
-
-Also test the production build:
+You can also test the production build:
 
 ```bash
 npm run build
 npm run preview
 ```
 
-If the production preview works but the deployed application does not, review the deployment configuration and environment variables.
-
 ---
 
 ## Next Steps
-
-After completing the local setup, see:
 
 * [Deployment Guide](DEPLOYMENT.md)
 * [Usage Guide](USAGE.md)

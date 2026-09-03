@@ -1,19 +1,17 @@
 # Stayinn
 
 <p align="center">
-  <img src="icon.png" alt="Stayinn Logo" width="90" />
+  <img src="icon.png" alt="Stayinn Logo" width="80" />
 </p>
 
-<h1 align="center">Stayinn</h1>
-
 <p align="center">
-  A modern room booking web application built with React and Firebase.
+  A room booking web application built with React, Vite, and Firebase.
 </p>
 
 <p align="center">
   <a href="https://stayinn-3a715.web.app">Live Demo</a>
   &nbsp;&nbsp;•&nbsp;&nbsp;
-  <a href="https://github.com/CodedByManish/Stayinn">Repository</a>
+  <a href="https://github.com/CodedByManish/Stayinn">GitHub Repository</a>
 </p>
 
 <p align="center">
@@ -25,169 +23,111 @@
 
 ---
 
-## Overview
+## About
 
-**Stayinn** is a responsive room booking platform designed to provide a simple and modern hotel booking experience.
+Stayinn is a web application for browsing and booking rooms.
 
-Users can explore rooms, view details, authenticate, make bookings, and receive confirmation. The application also includes an administrative dashboard.
+Users can:
+
+* Browse rooms
+* View room details
+* Create an account and log in
+* Make a booking
+* View booking confirmation
+
+The application also includes an admin dashboard for managing rooms and bookings.
 
 ---
 
 ## Preview
 
 <p align="center">
-  <img src="docs/screenshots/image.png" alt="Stayinn Home Page" width="850" />
+  <img src="docs/screenshots/image.png" alt="Stayinn Preview" width="850" />
 </p>
 
 ---
 
-## Features
+## Built With
 
-| User Experience         | Management              |
-| ----------------------- | ----------------------- |
-| Browse available rooms  | Admin dashboard         |
-| Room details            | Booking management      |
-| Booking workflow        | Room management         |
-| Booking confirmation    | Administrative controls |
-| Firebase authentication | Firebase integration    |
-| Responsive design       | Production deployment   |
-
----
-
-## Tech Stack
-
-```text
-Frontend       React + Vite
-Language       JavaScript
-Styling        CSS
-Authentication Firebase Authentication
-Hosting        Firebase Hosting
-CI/CD          GitHub Actions
-Version Control Git + GitHub
-```
+* React
+* Vite
+* JavaScript
+* CSS
+* Firebase Authentication
+* Firebase Hosting
+* GitHub Actions
 
 ---
 
-## Quick Start
+## Run Locally
 
-### 1. Clone
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/CodedByManish/Stayinn.git
 cd Stayinn
 ```
 
-### 2. Install
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Configure
+### 3. Configure Firebase
 
-Create a `.env` file using `.env.dist` as the reference.
+Create a `.env` file in the project root and add the required Firebase variables from `.env.dist`.
 
-### 4. Run
+### 4. Start the application
 
 ```bash
 npm run dev
 ```
 
-Open:
-
-```text
-http://localhost:5173
-```
+Open `http://localhost:5173` in your browser.
 
 ---
 
-## Build & Deploy
+## Build
 
-Build the production application:
+Create a production build:
 
 ```bash
 npm run build
 ```
 
-Deploy to Firebase Hosting:
+Preview the production build:
+
+```bash
+npm run preview
+```
+
+---
+
+## Deployment
+
+Stayinn is deployed using Firebase Hosting.
 
 ```bash
 firebase deploy --only hosting
 ```
 
-### Live Application
-
-<p align="center">
-
-**https://stayinn-3a715.web.app**
-
-</p>
+**Live:** https://stayinn-3a715.web.app
 
 ---
 
 ## Documentation
 
-| Guide                            | Description                         |
-| -------------------------------- | ----------------------------------- |
-| [Setup](docs/SETUP.md)           | Development setup and configuration |
-| [Deployment](docs/DEPLOYMENT.md) | Firebase and GitHub Actions         |
-| [Usage](docs/USAGE.md)           | User and admin guide                |
-
----
-
-## Project Structure
-
-```text
-Stayinn/
-├── src/
-│   ├── components/
-│   └── pages/
-│       ├── Admin.jsx
-│       ├── Booking.jsx
-│       ├── Confirmation.jsx
-│       ├── Home.jsx
-│       ├── RoomDetails.jsx
-│       └── Rooms.jsx
-│
-├── docs/
-│   ├── SETUP.md
-│   ├── DEPLOYMENT.md
-│   ├── USAGE.md
-│   └── screenshots/
-│       └── stayinn-home.png
-│
-├── .github/
-│   └── workflows/
-│
-├── firebase.js
-├── firebase.json
-├── package.json
-├── styles.css
-├── vite.config.js
-└── README.md
-```
+* [Setup Guide](docs/SETUP.md)
+* [Deployment Guide](docs/DEPLOYMENT.md)
+* [Usage Guide](docs/USAGE.md)
 
 ---
 
 ## Developer
 
-<p align="center">
-  <strong>Manish Kafle</strong><br>
-  React Developer
-</p>
+**Manish Kafle**
 
-<p align="center">
-  <a href="https://github.com/CodedByManish">
-    GitHub
-  </a>
-  &nbsp;&nbsp;•&nbsp;&nbsp;
-  <a href="https://github.com/CodedByManish/Stayinn">
-    Stayinn Repository
-  </a>
-</p>
-
----
-
-<p align="center">
-  <sub>Stayinn — Modern room booking, simplified.</sub>
-</p>
+[GitHub](https://github.com/CodedByManish)
+  •  
+[Stayinn Repository](https://github.com/CodedByManish/Stayinn)
