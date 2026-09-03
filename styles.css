@@ -643,7 +643,11 @@ ul { margin: 0; padding: 0; list-style: none; }
    Modal
    ============================================================ */
 .modal-overlay {
-  position: fixed; inset: 0; z-index: 9999;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 2147483647 !important;
   background: rgba(10, 30, 28, 0.5);
   display: flex;
   align-items: center;

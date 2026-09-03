@@ -9,6 +9,8 @@ import {
   signOut,
   googleErrorMessage
 } from "./firebase.js";
+import { AuthModal } from "./src/components/auth.jsx";
+
 const AppContext = createContext(null);
 const useApp = () => useContext(AppContext);
 const AUTH_KEY = "stayinn_firebase_session";
@@ -39,6 +41,8 @@ function AppProvider({ children }) {
   const [authLoading, setAuthLoading] = useState(true);
   const [hotelStatus, setHotelStatus] = useState("available");
   const [roomStatus, setRoomStatus] = useState({});
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState("login");
   const [bookings, setBookings] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem(BOOKINGS_KEY)) || [];
@@ -138,6 +142,13 @@ function AppProvider({ children }) {
     } catch {
     }
   }, [bookings]);
+  const openAuthModal = useCallback((mode = "login") => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+  }, []);
+  const closeAuthModal = useCallback(() => {
+    setIsAuthModalOpen(false);
+  }, []);
   const login = useCallback(async () => {
     let cred;
     try {
@@ -230,7 +241,11 @@ function AppProvider({ children }) {
       hotelStatus,
       setHotelStatus,
       roomStatus,
-      updateRoomStatus
+      updateRoomStatus,
+      isAuthModalOpen,
+      authModalMode,
+      openAuthModal,
+      closeAuthModal
     }),
     [
       route,
@@ -248,7 +263,11 @@ function AppProvider({ children }) {
       authLoading,
       hotelStatus,
       roomStatus,
-      updateRoomStatus
+      updateRoomStatus,
+      isAuthModalOpen,
+      authModalMode,
+      openAuthModal,
+      closeAuthModal
     ]
   );
   return /* @__PURE__ */ jsxDEV(AppContext.Provider, { value, children }, void 0, false, {
