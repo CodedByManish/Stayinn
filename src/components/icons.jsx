@@ -1,0 +1,83 @@
+import { jsxDEV } from "react/jsx-dev-runtime";
+import React from "react";
+const paths = {
+  calendar: "M6 3v3m12-3v3M4 8h16M5 5h14a1 1 0 011 1v13a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z",
+  users: "M17 20v-1a4 4 0 00-4-4H7a4 4 0 00-4 4v1m10-10a4 4 0 11-8 0 4 4 0 018 0zm6 6v1m-3-9a3 3 0 010 6",
+  search: "M21 21l-4.35-4.35m2.35-4.15a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z",
+  bed: "M3 19V9a1 1 0 011-1h1v8h14V8h1a1 1 0 011 1v10M8 9V7a1 1 0 011-1h6a1 1 0 011 1v2M3 19h18",
+  expand: "M6 3h4v4H6zM14 3h4v4h-4zM6 17h4v4H6zM14 17h4v4h-4z",
+  ruler: "M3 9l12-6 6 3-12 6-6-3zm9 3l2 1m-5 2.5l2 1",
+  star: "M12 3l2.7 5.6 6 .9-4.35 4.2 1.03 6L12 17.3 6.62 19.7l1.03-6L3.3 9.5l6-.9L12 3z",
+  wifi: "M5 12.5a9 9 0 0114 0m-11 3.5a4.5 4.5 0 018 0M12 20h.01",
+  pool: "M2 16c1.5 0 1.5 1 3 1s1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1M2 13c1.5 0 1.5 1 3 1s1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1M6 10l3-5 3 5 3-5 3 5M7 6h10",
+  gym: "M6.5 6.5l11 11M4 8l-1.5 1.5L8 15 9.5 13.5M4 12l-1 1L8.5 18.5l1-1M17.5 9.5L20 12l-4.5 4.5L13 14",
+  coffee: "M4 9h13v5a4 4 0 01-4 4H8a4 4 0 01-4-4V9zM4 9V7h13v2M17 11h1.5a2 2 0 010 4H17M8 21h5",
+  car: "M5 12l1-4a2 2 0 011.8-1.3h8.4A2 2 0 0118 8l1 4m-14 0h14M5 12l-.8 3a1.8 1.8 0 00.4 1.6V19h2v-2h10v2h2v-2.4a1.8 1.8 0 00.4-1.6l-.8-3M7 15h.01M17 15h.01",
+  spa: "M12 21a8 8 0 008-8c-4 0-6 1.5-8 4-2-2.5-4-4-8-4a8 8 0 008 8zm0 0V8M12 8C10 5 10 3 12 2c2 1 2 3 0 6z",
+  ac: "M12 3v18M5 8l14 8M19 8L5 16M12 3l-3 3M12 3l3 3M12 21l-3-3m3 3l3-3",
+  tv: "M4 6h16a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V7a1 1 0 011-1zm4-3l4 3 4-3",
+  minibar: "M6 8h12v11a1 1 0 01-1 1H7a1 1 0 01-1-1V8zm0-3a1 1 0 011-1h10a1 1 0 011 1v3H6V5zM9 13h6",
+  balcony: "M4 11h16M6 11v8m4-8v8m4-8v8m4-8v8M3 21h18M4 11l2-6 2 6m8 0l2-6 2 6",
+  bathtub: "M4 12h16v2a4 4 0 01-4 4H8a4 4 0 01-4-4v-2zm2 0V8a2 2 0 012-2h1a2 2 0 012 2m0 0h7a2 2 0 012 2v2M7 21l1-3m9 3l-1-3",
+  kitchen: "M4 10h16v8a2 2 0 01-2 2H6a2 2 0 01-2-2v-8zm3-4h10l1 4H6l1-4zM9 4V3m3 1V3m3 1V3",
+  desk: "M4 6h16a1 1 0 011 1v7a1 1 0 01-1 1H4a1 1 0 01-1-1V7a1 1 0 011-1zm8 9v3m-5 3h10",
+  view: "M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6zm10 2a2 2 0 100-4 2 2 0 000 4z",
+  sofa: "M5 12a3 3 0 100 6h14a3 3 0 100-6M5 12V8a3 3 0 013-3h8a3 3 0 013 3v4m-14 0h14M7 18v2m10-2v2",
+  sound: "M5 10v4h3l4 3V7L8 10H5zm10 0a4 4 0 010 4m2-7a7 7 0 010 10",
+  clock: "M12 8v4l2.5 2.5M12 21a9 9 0 100-18 9 9 0 000 18z",
+  mapPin: "M12 21s-6-5.2-6-10a6 6 0 1112 0c0 4.8-6 10-6 10zM12 13a2 2 0 100-4 2 2 0 000 4z",
+  phone: "M4 5c0 8 7 15 15 15l3-4-4-1.5-2.5 2A13 13 0 018.5 8.5l2-2.5L9 2 4 5z",
+  mail: "M3 6a1 1 0 011-1h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6zm18 0l-9 6L3 6",
+  check: "M5 13l4 4L19 7",
+  checkCircle: "M12 21a9 9 0 100-18 9 9 0 000 18zm-2-6l-2-2 4-4 4 4",
+  alert: "M12 3l9 16H3l9-16zm0 6v4m0 3h.01",
+  info: "M12 21a9 9 0 100-18 9 9 0 000 18zm0-13v5m0 3h.01",
+  x: "M6 6l12 12M18 6L6 18",
+  menu: "M4 7h16M4 12h16M4 17h16",
+  chevronRight: "M9 6l6 6-6 6",
+  arrowLeft: "M11 5l-7 7 7 7M4 12h16",
+  arrowRight: "M13 5l7 7-7 7M20 12H4",
+  download: "M12 3v12m0 0l-4-4m4 4l4-4M5 21h14",
+  print: "M6 9V3h12v6M6 15h12v6H6v-6zm0-6v4M18 9v4",
+  shield: "M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3zm-3 9l2 2 4-4",
+  lock: "M6 11V8a6 6 0 0112 0v3m-12 0h12a1 1 0 011 1v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-9a1 1 0 011-1zm6 5v3",
+  starHalf: "M12 3l2.7 5.6 6 .9-4.35 4.2 1.03 6L12 17.3 6.62 19.7l1.03-6L3.3 9.5l6-.9L12 3z",
+  heart: "M12 20s-7-4.4-9.2-8.2C1.2 9 2.5 5.5 5.7 5c2-.3 3.6.9 4.3 2 .7-1.1 2.3-2.3 4.3-2 3.2.5 4.5 4 2.9 6.8C19 15.6 12 20 12 20z",
+  filter: "M4 5h16l-6 7v5l-4 2v-7L4 5z",
+  card: "M3 6h18a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V7a1 1 0 011-1zm0 5h18",
+  refresh: "M20 12a8 8 0 11-2.3-5.6M20 4v4h-4",
+  home: "M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1v-9z",
+  bell: "M12 22a2 2 0 002-2h-4a2 2 0 002 2zm6-6v-5a7 7 0 00-4-6.3V4a2 2 0 10-4 0 1.7 4.7A7 7 0 00-4 6v4l-2 2h16l-2-2z"
+};
+function Icon({ name, size = 20, className = "", style, ...rest }) {
+  const d = paths[name];
+  if (!d) return null;
+  return /* @__PURE__ */ jsxDEV(
+    "svg",
+    {
+      className: `icon ${className}`,
+      width: size,
+      height: size,
+      viewBox: "0 0 24 24",
+      "aria-hidden": "true",
+      style,
+      ...rest,
+      children: /* @__PURE__ */ jsxDEV("path", { d }, void 0, false, {
+        fileName: "<stdin>",
+        lineNumber: 81,
+        columnNumber: 7
+      }, this)
+    },
+    void 0,
+    false,
+    {
+      fileName: "<stdin>",
+      lineNumber: 72,
+      columnNumber: 5
+    },
+    this
+  );
+}
+export {
+  Icon as default
+};
