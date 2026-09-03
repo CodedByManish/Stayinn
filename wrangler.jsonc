@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "stayinn",
+  "main": "server.js",
+  "compatibility_date": "2026-09-03",
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "stayinn-db",
+      "database_id": "local-stayinn-db"
+    }
+  ]
+}

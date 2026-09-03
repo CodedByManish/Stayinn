@@ -19,3 +19,13 @@ dist-ssr/
 
 #firebase
 .firebase/
+
+# Cloudflare local development
+.wrangler/
+
+# Local environment files
+.env
+.env.*
+
+# Keep example environment template
+!.env.dist
