@@ -21,23 +21,23 @@ function Rating({ value, count, showBox = false }) {
       </span>
 
       {showBox ? (
-        <Fragment>
+        <>
           <span className="rating-box">
             <Icon name="star" /> {value.toFixed(1)}
           </span>
           {count != null && (
             <span className="rating-count">({count.toLocaleString()})</span>
           )}
-        </Fragment>
+        </>
       ) : (
-        <Fragment>
+        <>
           <span className="rating-value">{value.toFixed(1)}</span>
           {count != null && (
             <span className="rating-count">
               ({count.toLocaleString()} reviews)
             </span>
           )}
-        </Fragment>
+        </>
       )}
     </span>
   );

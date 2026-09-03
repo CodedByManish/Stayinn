@@ -12,13 +12,7 @@ function Footer() {
         <div className="footer-grid">
           <div>
             <div className="brand">
-              <img
-                src="icon.png"
-                alt="Stayinn logo"
-                className="brand-logo"
-                width="34"
-                height="34"
-              />
+              <img src="/icon.png" alt="Stayinn logo"  className="brand-logo" width="34" height="34" />
               {" "}Stayinn
             </div>
 

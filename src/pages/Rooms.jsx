@@ -110,7 +110,7 @@ function Rooms() {
   };
 
   const Filters = (
-    <Fragment>
+    <>
       <div className="filter-group">
         <h4>Price per night</h4>
         <div className="range" aria-hidden="true">
@@ -251,11 +251,11 @@ function Rooms() {
           Reset filters
         </button>
       </div>
-    </Fragment>
+    </>
   );
 
   return (
-    <Fragment>
+    <>
       <div className="page-head">
         <div className="container">
           <nav className="crumbs" aria-label="Breadcrumb">
@@ -269,10 +269,10 @@ function Rooms() {
               <h1>Rooms & suites</h1>
               <p className="sub">
                 {query.checkIn && query.checkOut ? (
-                  <Fragment>
+                  <>
                     Staying {query.checkIn} → {query.checkOut}
                     {query.guests ? ` · ${query.guests} guests` : ""}
-                  </Fragment>
+                  </>
                 ) : (
                   "Every room includes free Wi-Fi and flexible cancellation."
                 )}
@@ -295,10 +295,10 @@ function Rooms() {
                 {loading ? (
                   "Finding rooms…"
                 ) : (
-                  <Fragment>
+                  <>
                     <strong>{filtered.length}</strong>{" "}
                     {filtered.length === 1 ? "room" : "rooms"} available
-                  </Fragment>
+                  </>
                 )}
               </div>
 
@@ -343,7 +343,7 @@ function Rooms() {
           </div>
         </div>
       </div>
-    </Fragment>
+    </>
   );
 }
 

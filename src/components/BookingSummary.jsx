@@ -17,12 +17,12 @@ function BookingSummary({ room, checkIn, checkOut, guests, compact = false }) {
 
       <div className="summary-body">
         {!compact && (
-          <Fragment>
+          <>
             <h3>{room.name}</h3>
             <div className="room-type">
               {room.type} · {room.beds} · sleeps {room.capacity}
             </div>
-          </Fragment>
+          </>
         )}
 
         {compact && (

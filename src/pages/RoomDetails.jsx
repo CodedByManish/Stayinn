@@ -35,7 +35,7 @@ function RoomDetails({ id }) {
   };
 
   return (
-    <Fragment>
+    <>
       <div className="page-head">
         <div className="container">
           <nav className="crumbs" aria-label="Breadcrumb">
@@ -432,7 +432,7 @@ function RoomDetails({ id }) {
           </aside>
         </div>
       </div>
-    </Fragment>
+    </>
   );
 }
 

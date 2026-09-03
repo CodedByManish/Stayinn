@@ -291,7 +291,7 @@ function Admin() {
     ) || HOTEL_STATUSES[0];
 
   return (
-    <Fragment>
+    <>
       <div className="page-head">
         <div className="container">
           <nav className="crumbs" aria-label="Breadcrumb">
@@ -586,7 +586,7 @@ function Admin() {
           </div>
         )}
       </div>
-    </Fragment>
+    </>
   );
 }
 

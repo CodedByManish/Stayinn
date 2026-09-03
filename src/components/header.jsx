@@ -95,7 +95,7 @@ function Header() {
 
       <nav className="container nav-inner" aria-label="Main navigation">
         <a className="brand" href="#/" onClick={() => setOpen(false)}>
-          <img src="icon.png" alt="Stayinn logo" className="brand-logo" width="34" height="34" />
+          <img src="/icon.png" alt="Stayinn logo" className="brand-logo" width="34" height="34" />
           Stayinn
         </a>
 
