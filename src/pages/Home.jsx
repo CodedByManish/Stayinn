@@ -30,14 +30,12 @@ export default function Home() {
           role="img"
           aria-label={PROPERTY.hero.alt}
         />
-
         <div className="hero-overlay" aria-hidden="true" />
 
         <div className="container hero-content">
           <span className="hero-eyebrow">
             <Icon name="star" />
-            Rated {PROPERTY.rating} by {PROPERTY.reviewsCount.toLocaleString()}{" "}
-            guests
+            Rated {PROPERTY.rating} by {PROPERTY.reviewsCount.toLocaleString()} guests
           </span>
 
           <h1>A calm, comfortable stay, made effortless</h1>
@@ -130,7 +128,6 @@ export default function Home() {
                   <div className="feature-icon">
                     <Icon name="checkCircle" />
                   </div>
-
                   <div>
                     <h3>{item.title}</h3>
                     <p>{item.desc}</p>
@@ -181,7 +178,6 @@ export default function Home() {
                 <h4>
                   <Icon name="mapPin" /> Nearby landmarks
                 </h4>
-
                 {NEARBY.landmarks.map((place) => (
                   <div key={place.name} className="nearby-row">
                     <span>{place.name}</span>
@@ -194,7 +190,6 @@ export default function Home() {
                 <h4>
                   <Icon name="coffee" /> Food & shopping
                 </h4>
-
                 {NEARBY.food.map((place) => (
                   <div key={place.name} className="nearby-row">
                     <span>{place.name}</span>
@@ -207,7 +202,6 @@ export default function Home() {
                 <h4>
                   <Icon name="car" /> Transportation
                 </h4>
-
                 {NEARBY.transport.map((place) => (
                   <div key={place.name} className="nearby-row">
                     <span>{place.name}</span>
@@ -241,12 +235,9 @@ export default function Home() {
                 <div className="rule-card">
                   <div className="feature-icon">
                     <Icon
-                      name={
-                        i === 0 ? "clock" : i === 1 ? "users" : "shield"
-                      }
+                      name={i === 0 ? "clock" : i === 1 ? "users" : "shield"}
                     />
                   </div>
-
                   <div>
                     <h3>{rule.title}</h3>
                     <p>{rule.desc}</p>

@@ -9,6 +9,7 @@ import { useApp } from "../../AppProvider.jsx";
 import { ROOMS } from "../../data.js";
 import { pricing } from "../../pricing.js";
 import { todayISO } from "../../utils.js";
+
 function readQuery() {
   const q = new URLSearchParams(window.location.hash.split("?")[1] || "");
   return {
@@ -17,6 +18,7 @@ function readQuery() {
     guests: q.get("guests") ? parseInt(q.get("guests"), 10) : 2
   };
 }
+
 const validators = {
   name: (v) => v.trim().length < 2 ? "Please enter the guest's full name." : "",
   email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "" : "Enter a valid email address.",
@@ -27,8 +29,18 @@ const validators = {
     return "";
   }
 };
+
 function Booking({ id }) {
-  const { addBooking, toast, user, authLoading, authHeaders, hotelStatus, roomStatus } = useApp();
+  const {
+    addBooking,
+    toast,
+    user,
+    authLoading,
+    authHeaders,
+    hotelStatus,
+    roomStatus
+  } = useApp();
+
   const room = ROOMS.find((r) => r.id === id);
   const [q] = useState(readQuery);
   const [form, setForm] = useState({
@@ -43,51 +55,52 @@ function Booking({ id }) {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
   const [paymentError, setPaymentError] = useState("");
+
   useEffect(() => {
     if (form.guests > (room ? room.capacity : 4)) {
       setForm((f) => ({ ...f, guests: room ? room.capacity : 4 }));
     }
   }, [form.guests, room]);
+
   if (!room) {
-    return /* @__PURE__ */ jsxDEV("div", { className: "container", children: /* @__PURE__ */ jsxDEV(EmptyState, { icon: "alert", title: "Room not found", text: "The room you're booking no longer exists." }, void 0, false, {
-      fileName: "<stdin>",
-      lineNumber: 51,
-      columnNumber: 39
-    }, this) }, void 0, false, {
-      fileName: "<stdin>",
-      lineNumber: 51,
-      columnNumber: 12
-    }, this);
+    return (
+      <div className="container">
+        <EmptyState
+          icon="alert"
+          title="Room not found"
+          text="The room you're booking no longer exists."
+        />
+      </div>
+    );
   }
+
   if (authLoading) {
-    return /* @__PURE__ */ jsxDEV("div", { className: "container", children: /* @__PURE__ */ jsxDEV("div", { className: "state", children: /* @__PURE__ */ jsxDEV("p", { className: "muted", children: "Loading\u2026" }, void 0, false, {
-      fileName: "<stdin>",
-      lineNumber: 55,
-      columnNumber: 62
-    }, this) }, void 0, false, {
-      fileName: "<stdin>",
-      lineNumber: 55,
-      columnNumber: 39
-    }, this) }, void 0, false, {
-      fileName: "<stdin>",
-      lineNumber: 55,
-      columnNumber: 12
-    }, this);
+    return (
+      <div className="container">
+        <div className="state">
+          <p className="muted">Loading…</p>
+        </div>
+      </div>
+    );
   }
-  if (!user) {
-    return /* @__PURE__ */ jsxDEV(SignInGate, {}, void 0, false, {
-      fileName: "<stdin>",
-      lineNumber: 59,
-      columnNumber: 12
-    }, this);
-  }
-  const roomInactive = room && roomStatus[room.id] && roomStatus[room.id] !== "active";
-  const blocked = roomInactive || hotelStatus === "closed" || hotelStatus === "fully_booked";
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  if (!user) return <SignInGate />;
+
+  const roomInactive =
+    room && roomStatus[room.id] && roomStatus[room.id] !== "active";
+  const blocked =
+    roomInactive ||
+    hotelStatus === "closed" ||
+    hotelStatus === "fully_booked";
+
+  const set = (k) => (e) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+
   const setGuests = (e) => {
     const n = Math.max(1, Math.min(room.capacity, +e.target.value));
     setForm((f) => ({ ...f, guests: n }));
   };
+
   const validate = () => {
     const e = {};
     e.name = validators.name(form.name);
@@ -97,12 +110,15 @@ function Booking({ id }) {
     setErrors(e);
     return !Object.values(e).some(Boolean);
   };
+
   const createBooking = async () => {
-    if (status !== "idle" || blocked) return;
-    if (!validate()) return;
+    if (status !== "idle" || blocked || !validate()) return;
+
     setStatus("submitting");
     setPaymentError("");
+
     const p2 = pricing(room, form.checkIn, form.checkOut, form.guests);
+
     try {
       const res = await fetch("/api/bookings", {
         method: "POST",
@@ -121,16 +137,29 @@ function Booking({ id }) {
           total: p2.total
         })
       });
+
       const data = await res.json();
+
       if (!res.ok) {
         setStatus("error");
-        toast({ type: "error", title: "Booking failed", message: data.error || "Please try again." });
+        toast({
+          type: "error",
+          title: "Booking failed",
+          message: data.error || "Please try again."
+        });
         return;
       }
+
       const booking = data.booking;
       addBooking(booking);
-      toast({ type: "success", title: "Booking submitted!", message: `Reference ${booking.ref}` });
+      toast({
+        type: "success",
+        title: "Booking submitted!",
+        message: `Reference ${booking.ref}`
+      });
+
       const Swal = window.Swal;
+
       if (Swal && Swal.fire) {
         Swal.fire({
           icon: "success",
@@ -146,354 +175,272 @@ function Booking({ id }) {
       }
     } catch {
       setStatus("error");
-      toast({ type: "error", title: "Booking failed", message: "Network error. Please try again." });
+      toast({
+        type: "error",
+        title: "Booking failed",
+        message: "Network error. Please try again."
+      });
     }
   };
+
   const handleSubmit = (ev) => {
     ev.preventDefault();
     if (blocked) return;
     if (!validate()) return;
     setPaymentError("");
   };
-  const handlePayPalSuccess = () => {
-    createBooking();
-  };
+
+  const handlePayPalSuccess = () => createBooking();
+
   const handlePayPalError = (msg) => {
     setStatus("idle");
     setPaymentError(msg);
   };
+
   const p = pricing(room, form.checkIn, form.checkOut, form.guests);
-  const formValid = !validators.name(form.name) && !validators.email(form.email) && !validators.phone(form.phone) && !validators.dates(form.checkIn, form.checkOutut);
-  return /* @__PURE__ */ jsxDEV(Fragment, { children: [
-    /* @__PURE__ */ jsxDEV("div", { className: "page-head", children: /* @__PURE__ */ jsxDEV("div", { className: "container", children: [
-      /* @__PURE__ */ jsxDEV("nav", { className: "crumbs", "aria-label": "Breadcrumb", children: [
-        /* @__PURE__ */ jsxDEV("a", { href: "#/", children: "Home" }, void 0, false, {
-          fileName: "<stdin>",
-          lineNumber: 157,
-          columnNumber: 13
-        }, this),
-        /* @__PURE__ */ jsxDEV("span", { className: "sep", children: "/" }, void 0, false, {
-          fileName: "<stdin>",
-          lineNumber: 157,
-          columnNumber: 34
-        }, this),
-        /* @__PURE__ */ jsxDEV("a", { href: "#/rooms", children: "Rooms" }, void 0, false, {
-          fileName: "<stdin>",
-          lineNumber: 158,
-          columnNumber: 13
-        }, this),
-        /* @__PURE__ */ jsxDEV("span", { className: "sep", children: "/" }, void 0, false, {
-          fileName: "<stdin>",
-          lineNumber: 158,
-          columnNumber: 40
-        }, this),
-        /* @__PURE__ */ jsxDEV("a", { href: `#/room/${room.id}`, children: room.name }, void 0, false, {
-          fileName: "<stdin>",
-          lineNumber: 159,
-          columnNumber: 13
-        }, this),
-        /* @__PURE__ */ jsxDEV("span", { className: "sep", children: "/" }, void 0, false, {
-          fileName: "<stdin>",
-          lineNumber: 159,
-          columnNumber: 58
-        }, this),
-        /* @__PURE__ */ jsxDEV("span", { children: "Booking" }, void 0, false, {
-          fileName: "<stdin>",
-          lineNumber: 160,
-          columnNumber: 13
-        }, this)
-      ] }, void 0, true, {
-        fileName: "<stdin>",
-        lineNumber: 156,
-        columnNumber: 11
-      }, this),
-      /* @__PURE__ */ jsxDEV("h1", { children: "Complete your booking" }, void 0, false, {
-        fileName: "<stdin>",
-        lineNumber: 162,
-        columnNumber: 11
-      }, this)
-    ] }, void 0, true, {
-      fileName: "<stdin>",
-      lineNumber: 155,
-      columnNumber: 9
-    }, this) }, void 0, false, {
-      fileName: "<stdin>",
-      lineNumber: 154,
-      columnNumber: 7
-    }, this),
-    /* @__PURE__ */ jsxDEV("div", { className: "container", children: /* @__PURE__ */ jsxDEV("div", { className: "booking-layout", children: [
-      /* @__PURE__ */ jsxDEV("div", { children: /* @__PURE__ */ jsxDEV("form", { className: "form-card", onSubmit: handleSubmit, noValidate: true, children: [
-        /* @__PURE__ */ jsxDEV("h2", { children: "Guest details" }, void 0, false, {
-          fileName: "<stdin>",
-          lineNumber: 170,
-          columnNumber: 15
-        }, this),
-        /* @__PURE__ */ jsxDEV("p", { className: "form-sub", children: "Where should we send your confirmation?" }, void 0, false, {
-          fileName: "<stdin>",
-          lineNumber: 171,
-          columnNumber: 15
-        }, this),
-        /* @__PURE__ */ jsxDEV("div", { className: "form-grid", children: [
-          /* @__PURE__ */ jsxDEV("div", { className: "span2", children: /* @__PURE__ */ jsxDEV("div", { className: "field", children: [
-            /* @__PURE__ */ jsxDEV("label", { htmlFor: "bk-name", children: "Full name" }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 176,
-              columnNumber: 21
-            }, this),
-            /* @__PURE__ */ jsxDEV("input", { id: "bk-name", type: "text", value: form.name, onChange: set("name"), autoComplete: "name", placeholder: "Jane Doe" }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 177,
-              columnNumber: 21
-            }, this),
-            errors.name && /* @__PURE__ */ jsxDEV("p", { className: "field-error", role: "alert", children: errors.name }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 178,
-              columnNumber: 37
-            }, this)
-          ] }, void 0, true, {
-            fileName: "<stdin>",
-            lineNumber: 175,
-            columnNumber: 19
-          }, this) }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 174,
-            columnNumber: 17
-          }, this),
-          /* @__PURE__ */ jsxDEV("div", { className: `field${errors.email ? " has-error" : ""}`, children: [
-            /* @__PURE__ */ jsxDEV("label", { htmlFor: "bk-email", children: "Email" }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 182,
-              columnNumber: 19
-            }, this),
-            /* @__PURE__ */ jsxDEV("input", { id: "bk-email", type: "email", value: form.email, onChange: set("email"), autoComplete: "email", placeholder: "jane@example.com" }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 183,
-              columnNumber: 19
-            }, this),
-            errors.email && /* @__PURE__ */ jsxDEV("p", { className: "field-error", role: "alert", children: errors.email }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 184,
-              columnNumber: 36
-            }, this)
-          ] }, void 0, true, {
-            fileName: "<stdin>",
-            lineNumber: 181,
-            columnNumber: 17
-          }, this),
-          /* @__PURE__ */ jsxDEV("div", { className: `field${errors.phone ? " has-error" : ""}`, children: [
-            /* @__PURE__ */ jsxDEV("label", { htmlFor: "bk-phone", children: "Phone" }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 187,
-              columnNumber: 19
-            }, this),
-            /* @__PURE__ */ jsxDEV("input", { id: "bk-phone", type: "tel", value: form.phone, onChange: set("phone"), autoComplete: "tel", placeholder: "+1 555 010 1234" }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 188,
-              columnNumber: 19
-            }, this),
-            errors.phone && /* @__PURE__ */ jsxDEV("p", { className: "field-error", role: "alert", children: errors.phone }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 189,
-              columnNumber: 36
-            }, this)
-          ] }, void 0, true, {
-            fileName: "<stdin>",
-            lineNumber: 186,
-            columnNumber: 17
-          }, this),
-          /* @__PURE__ */ jsxDEV("div", { className: `field${errors.dates ? " has-error" : ""}`, children: [
-            /* @__PURE__ */ jsxDEV("label", { htmlFor: "bk-in", children: "Check-in" }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 192,
-              columnNumber: 19
-            }, this),
-            /* @__PURE__ */ jsxDEV("input", { id: "bk-in", type: "date", value: form.checkIn, min: todayISO(), onChange: set("checkIn") }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 193,
-              columnNumber: 19
-            }, this),
-            errors.dates && /* @__PURE__ */ jsxDEV("p", { className: "field-error", role: "alert", children: errors.dates }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 194,
-              columnNumber: 36
-            }, this)
-          ] }, void 0, true, {
-            fileName: "<stdin>",
-            lineNumber: 191,
-            columnNumber: 17
-          }, this),
-          /* @__PURE__ */ jsxDEV("div", { className: `field${errors.dates ? " has-error" : ""}`, children: [
-            /* @__PURE__ */ jsxDEV("label", { htmlFor: "bk-out", children: "Check-out" }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 197,
-              columnNumber: 19
-            }, this),
-            /* @__PURE__ */ jsxDEV("input", { id: "bk-out", type: "date", value: form.checkOut, min: form.checkIn || todayISO(), onChange: set("checkOut") }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 198,
-              columnNumber: 19
-            }, this)
-          ] }, void 0, true, {
-            fileName: "<stdin>",
-            lineNumber: 196,
-            columnNumber: 17
-          }, this),
-          /* @__PURE__ */ jsxDEV("div", { className: "span2", children: /* @__PURE__ */ jsxDEV("div", { className: "field", children: [
-            /* @__PURE__ */ jsxDEV("label", { htmlFor: "bk-guests", children: "Number of guests" }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 202,
-              columnNumber: 21
-            }, this),
-            /* @__PURE__ */ jsxDEV("select", { id: "bk-guests", value: form.guests, onChange: setGuests, children: [1, 2, 3, 4].filter((n) => n <= room.capacity).map((n) => /* @__PURE__ */ jsxDEV("option", { value: n, children: [
-              n,
-              " ",
-              n === 1 ? "guest" : "guests"
-            ] }, n, true, {
-              fileName: "<stdin>",
-              lineNumber: 205,
-              columnNumber: 25
-            }, this)) }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 203,
-              columnNumber: 21
-            }, this)
-          ] }, void 0, true, {
-            fileName: "<stdin>",
-            lineNumber: 201,
-            columnNumber: 19
-          }, this) }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 200,
-            columnNumber: 17
-          }, this),
-          /* @__PURE__ */ jsxDEV("div", { className: "span2", children: /* @__PURE__ */ jsxDEV("div", { className: "field", children: [
-            /* @__PURE__ */ jsxDEV("label", { htmlFor: "bk-req", children: [
-              "Special requests ",
-              /* @__PURE__ */ jsxDEV("span", { style: { textTransform: "none", fontWeight: 400 }, children: "(optional)" }, void 0, false, {
-                fileName: "<stdin>",
-                lineNumber: 212,
-                columnNumber: 62
-              }, this)
-            ] }, void 0, true, {
-              fileName: "<stdin>",
-              lineNumber: 212,
-              columnNumber: 21
-            }, this),
-            /* @__PURE__ */ jsxDEV("textarea", { id: "bk-req", value: form.requests, onChange: set("requests"), placeholder: "Early check-in, extra pillows, dietary requirements\u2026" }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 213,
-              columnNumber: 21
-            }, this)
-          ] }, void 0, true, {
-            fileName: "<stdin>",
-            lineNumber: 211,
-            columnNumber: 19
-          }, this) }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 210,
-            columnNumber: 17
-          }, this)
-        ] }, void 0, true, {
-          fileName: "<stdin>",
-          lineNumber: 173,
-          columnNumber: 15
-        }, this),
-        /* @__PURE__ */ jsxDEV("div", { style: { marginTop: 24, borderTop: "1px solid var(--line)", paddingTop: 18 }, children: [
-          /* @__PURE__ */ jsxDEV("p", { style: { fontSize: 13.5, color: "var(--ink-soft)", marginBottom: 12, display: "flex", gap: 8, alignItems: "center" }, children: [
-            /* @__PURE__ */ jsxDEV(Icon, { name: "shield" }, void 0, false, {
-              fileName: "<stdin>",
-              lineNumber: 220,
-              columnNumber: 19
-            }, this),
-            " Pay securely with PayPal. Free cancellation up to 48h before arrival."
-          ] }, void 0, true, {
-            fileName: "<stdin>",
-            lineNumber: 219,
-            columnNumber: 17
-          }, this),
-          status === "error" && /* @__PURE__ */ jsxDEV("div", { className: "field-error", style: { background: "var(--danger-soft)", padding: 12, borderRadius: 10, marginBottom: 12 }, role: "alert", children: "We couldn't process your booking. Your card hasn't been charged \u2014 please try again." }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 223,
-            columnNumber: 19
-          }, this),
-          paymentError && /* @__PURE__ */ jsxDEV("div", { className: "field-error", style: { background: "var(--danger-soft)", padding: 12, borderRadius: 10, marginBottom: 12 }, role: "alert", children: paymentError }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 228,
-            columnNumber: 19
-          }, this),
-          blocked && /* @__PURE__ */ jsxDEV("div", { className: "field-error", style: { background: "var(--warning)", color: "#fff", padding: 12, borderRadius: 10, marginBottom: 12 }, role: "alert", children: "We're not accepting new bookings right now. Please check back later." }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 233,
-            columnNumber: 19
-          }, this),
-          !blocked && /* @__PURE__ */ jsxDEV(
-            PayPalButton,
-            {
-              amount: p.total,
-              disabled: !formValid || status === "submitting",
-              onSuccess: handlePayPalSuccess,
-              onError: handlePayPalError
-            },
-            void 0,
-            false,
-            {
-              fileName: "<stdin>",
-              lineNumber: 238,
-              columnNumber: 19
-            },
-            this
-          ),
-          /* @__PURE__ */ jsxDEV("button", { type: "submit", className: "btn btn-accent btn-lg btn-block", style: { marginTop: 12 }, disabled: blocked, children: blocked ? /* @__PURE__ */ jsxDEV(Fragment, { children: "Not accepting bookings" }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 246,
-            columnNumber: 30
-          }, this) : /* @__PURE__ */ jsxDEV(Fragment, { children: "Review booking details" }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 246,
-            columnNumber: 60
-          }, this) }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 245,
-            columnNumber: 17
-          }, this)
-        ] }, void 0, true, {
-          fileName: "<stdin>",
-          lineNumber: 218,
-          columnNumber: 15
-        }, this)
-      ] }, void 0, true, {
-        fileName: "<stdin>",
-        lineNumber: 169,
-        columnNumber: 13
-      }, this) }, void 0, false, {
-        fileName: "<stdin>",
-        lineNumber: 168,
-        columnNumber: 11
-      }, this),
-      /* @__PURE__ */ jsxDEV("aside", { className: "sticky-wrap", children: /* @__PURE__ */ jsxDEV(BookingSummary, { room, checkIn: form.checkIn, checkOut: form.checkOut, guests: form.guests }, void 0, false, {
-        fileName: "<stdin>",
-        lineNumber: 253,
-        columnNumber: 13
-      }, this) }, void 0, false, {
-        fileName: "<stdin>",
-        lineNumber: 252,
-        columnNumber: 11
-      }, this)
-    ] }, void 0, true, {
-      fileName: "<stdin>",
-      lineNumber: 167,
-      columnNumber: 9
-    }, this) }, void 0, false, {
-      fileName: "<stdin>",
-      lineNumber: 166,
-      columnNumber: 7
-    }, this)
-  ] }, void 0, true, {
-    fileName: "<stdin>",
-    lineNumber: 153,
-    columnNumber: 5
-  }, this);
+
+  const formValid =
+    !validators.name(form.name) &&
+    !validators.email(form.email) &&
+    !validators.phone(form.phone) &&
+    !validators.dates(form.checkIn, form.checkOutut);
+
+  return (
+    <Fragment>
+      <div className="page-head">
+        <div className="container">
+          <nav className="crumbs" aria-label="Breadcrumb">
+            <a href="#/">Home</a>
+            <span className="sep">/</span>
+            <a href="#/rooms">Rooms</a>
+            <span className="sep">/</span>
+            <a href={`#/room/${room.id}`}>{room.name}</a>
+            <span className="sep">/</span>
+            <span>Booking</span>
+          </nav>
+          <h1>Complete your booking</h1>
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="booking-layout">
+          <div>
+            <form className="form-card" onSubmit={handleSubmit} noValidate>
+              <h2>Guest details</h2>
+              <p className="form-sub">
+                Where should we send your confirmation?
+              </p>
+
+              <div className="form-grid">
+                <div className="span2">
+                  <div className="field">
+                    <label htmlFor="bk-name">Full name</label>
+                    <input
+                      id="bk-name"
+                      type="text"
+                      value={form.name}
+                      onChange={set("name")}
+                      autoComplete="name"
+                      placeholder="Jane Doe"
+                    />
+                    {errors.name && (
+                      <p className="field-error" role="alert">{errors.name}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className={`field${errors.email ? " has-error" : ""}`}>
+                  <label htmlFor="bk-email">Email</label>
+                  <input
+                    id="bk-email"
+                    type="email"
+                    value={form.email}
+                    onChange={set("email")}
+                    autoComplete="email"
+                    placeholder="jane@example.com"
+                  />
+                  {errors.email && (
+                    <p className="field-error" role="alert">{errors.email}</p>
+                  )}
+                </div>
+
+                <div className={`field${errors.phone ? " has-error" : ""}`}>
+                  <label htmlFor="bk-phone">Phone</label>
+                  <input
+                    id="bk-phone"
+                    type="tel"
+                    value={form.phone}
+                    onChange={set("phone")}
+                    autoComplete="tel"
+                    placeholder="+1 555 010 1234"
+                  />
+                  {errors.phone && (
+                    <p className="field-error" role="alert">{errors.phone}</p>
+                  )}
+                </div>
+
+                <div className={`field${errors.dates ? " has-error" : ""}`}>
+                  <label htmlFor="bk-in">Check-in</label>
+                  <input
+                    id="bk-in"
+                    type="date"
+                    value={form.checkIn}
+                    min={todayISO()}
+                    onChange={set("checkIn")}
+                  />
+                  {errors.dates && (
+                    <p className="field-error" role="alert">{errors.dates}</p>
+                  )}
+                </div>
+
+                <div className={`field${errors.dates ? " has-error" : ""}`}>
+                  <label htmlFor="bk-out">Check-out</label>
+                  <input
+                    id="bk-out"
+                    type="date"
+                    value={form.checkOut}
+                    min={form.checkIn || todayISO()}
+                    onChange={set("checkOut")}
+                  />
+                </div>
+
+                <div className="span2">
+                  <div className="field">
+                    <label htmlFor="bk-guests">Number of guests</label>
+                    <select
+                      id="bk-guests"
+                      value={form.guests}
+                      onChange={setGuests}
+                    >
+                      {[1, 2, 3, 4]
+                        .filter((n) => n <= room.capacity)
+                        .map((n) => (
+                          <option value={n} key={n}>
+                            {n} {n === 1 ? "guest" : "guests"}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="span2">
+                  <div className="field">
+                    <label htmlFor="bk-req">
+                      Special requests{" "}
+                      <span style={{ textTransform: "none", fontWeight: 400 }}>
+                        (optional)
+                      </span>
+                    </label>
+                    <textarea
+                      id="bk-req"
+                      value={form.requests}
+                      onChange={set("requests")}
+                      placeholder="Early check-in, extra pillows, dietary requirements…"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  marginTop: 24,
+                  borderTop: "1px solid var(--line)",
+                  paddingTop: 18
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: 13.5,
+                    color: "var(--ink-soft)",
+                    marginBottom: 12,
+                    display: "flex",
+                    gap: 8,
+                    alignItems: "center"
+                  }}
+                >
+                  <Icon name="shield" />
+                  Pay securely with PayPal. Free cancellation up to 48h before arrival.
+                </p>
+
+                {status === "error" && (
+                  <div
+                    className="field-error"
+                    style={{
+                      background: "var(--danger-soft)",
+                      padding: 12,
+                      borderRadius: 10,
+                      marginBottom: 12
+                    }}
+                    role="alert"
+                  >
+                    We couldn't process your booking. Your card hasn't been charged — please try again.
+                  </div>
+                )}
+
+                {paymentError && (
+                  <div
+                    className="field-error"
+                    style={{
+                      background: "var(--danger-soft)",
+                      padding: 12,
+                      borderRadius: 10,
+                      marginBottom: 12
+                    }}
+                    role="alert"
+                  >
+                    {paymentError}
+                  </div>
+                )}
+
+                {blocked && (
+                  <div
+                    className="field-error"
+                    style={{
+                      background: "var(--warning)",
+                      color: "#fff",
+                      padding: 12,
+                      borderRadius: 10,
+                      marginBottom: 12
+                    }}
+                    role="alert"
+                  >
+                    We're not accepting new bookings right now. Please check back later.
+                  </div>
+                )}
+
+                {!blocked && (
+                  <PayPalButton
+                    amount={p.total}
+                    disabled={!formValid || status === "submitting"}
+                    onSuccess={handlePayPalSuccess}
+                    onError={handlePayPalError}
+                  />
+                )}
+
+                <button
+                  type="submit"
+                  className="btn btn-accent btn-lg btn-block"
+                  style={{ marginTop: 12 }}
+                  disabled={blocked}
+                >
+                  {blocked ? "Not accepting bookings" : "Review booking details"}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <aside className="sticky-wrap">
+            <BookingSummary
+              room={room}
+              checkIn={form.checkIn}
+              checkOut={form.checkOut}
+              guests={form.guests}
+            />
+          </aside>
+        </div>
+      </div>
+    </Fragment>
+  );
 }
-export {
-  Booking as default
-};
+
+export { Booking as default };

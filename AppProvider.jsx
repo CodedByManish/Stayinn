@@ -270,11 +270,11 @@ function AppProvider({ children }) {
       closeAuthModal
     ]
   );
-  return /* @__PURE__ */ jsxDEV(AppContext.Provider, { value, children }, void 0, false, {
-    fileName: "<stdin>",
-    lineNumber: 210,
-    columnNumber: 10
-  }, this);
+  return (
+    <AppContext.Provider value={value}>
+      {children}
+    </AppContext.Provider>
+  );
 }
 export {
   AppProvider,

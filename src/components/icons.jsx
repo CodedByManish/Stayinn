@@ -1,5 +1,6 @@
 import { jsxDEV } from "react/jsx-dev-runtime";
 import React from "react";
+
 const paths = {
   calendar: "M6 3v3m12-3v3M4 8h16M5 5h14a1 1 0 011 1v13a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z",
   users: "M17 20v-1a4 4 0 00-4-4H7a4 4 0 00-4 4v1m10-10a4 4 0 11-8 0 4 4 0 018 0zm6 6v1m-3-9a3 3 0 010 6",
@@ -49,35 +50,27 @@ const paths = {
   home: "M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1v-9z",
   bell: "M12 22a2 2 0 002-2h-4a2 2 0 002 2zm6-6v-5a7 7 0 00-4-6.3V4a2 2 0 10-4 0 1.7 4.7A7 7 0 00-4 6v4l-2 2h16l-2-2z"
 };
+
 function Icon({ name, size = 20, className = "", style, ...rest }) {
   const d = paths[name];
+
   if (!d) return null;
-  return /* @__PURE__ */ jsxDEV(
-    "svg",
-    {
-      className: `icon ${className}`,
-      width: size,
-      height: size,
-      viewBox: "0 0 24 24",
-      "aria-hidden": "true",
-      style,
-      ...rest,
-      children: /* @__PURE__ */ jsxDEV("path", { d }, void 0, false, {
-        fileName: "<stdin>",
-        lineNumber: 81,
-        columnNumber: 7
-      }, this)
-    },
-    void 0,
-    false,
-    {
-      fileName: "<stdin>",
-      lineNumber: 72,
-      columnNumber: 5
-    },
-    this
+
+  return (
+    <svg
+      className={`icon ${className}`}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      style={style}
+      {...rest}
+    >
+      <path d={d} />
+    </svg>
   );
 }
+
 export {
   Icon as default
 };

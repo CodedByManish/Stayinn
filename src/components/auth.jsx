@@ -25,42 +25,45 @@ function AuthModal({ open, onClose, mode = "login", onSuccess }) {
     setBusy(true);
     setError("");
     const result = await login();
+
     if (result.redirecting) {
       setBusy(false);
       setError("Opening Google… if the popup was blocked, you'll be redirected to finish signing in.");
       return;
     }
+
     setBusy(false);
-    if (result.error) {
-      setError(result.error);
-      return;
-    }
+    if (result.error) return setError(result.error);
+
     toast({
       type: "success",
       title: result.isNew ? "Account created!" : "Welcome back!",
-      message: `Signed in as ${result.user.username || result.user.name}`
+      message: `Signed in as ${result.user.username || result.user.name}`,
     });
     onClose();
     if (onSuccess) onSuccess(result.user);
   };
 
   return (
-    <Modal open={open} onClose={onClose} title={mode === "register" ? "Create your account" : "Welcome back"}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={mode === "register" ? "Create your account" : "Welcome back"}
+    >
       <div className="auth-modal">
         <p className="auth-lead">
           {mode === "register"
             ? "Create a Stayinn account to book rooms and track your stays."
             : "Sign in to book rooms and manage your stays."}
         </p>
+
         <button className="google-btn" onClick={handleGoogle} disabled={busy}>
           <GoogleIcon />
           {busy ? "Signing in…" : "Continue with Google"}
         </button>
-        {error && (
-          <p className="field-error" role="alert">
-            {error}
-          </p>
-        )}
+
+        {error && <p className="field-error" role="alert">{error}</p>}
+
         <p className="auth-note">
           {mode === "register"
             ? "Registration and login both use your Google account — no separate password needed."
@@ -73,7 +76,7 @@ function AuthModal({ open, onClose, mode = "login", onSuccess }) {
 
 function SignInGate({
   title = "Sign in to book",
-  text = "You need to be signed in to complete a booking. Continue with Google to get started."
+  text = "You need to be signed in to complete a booking. Continue with Google to get started.",
 }) {
   const { login, toast } = useApp();
   const [busy, setBusy] = useState(false);
@@ -83,40 +86,36 @@ function SignInGate({
     setBusy(true);
     setError("");
     const result = await login();
+
     if (result.redirecting) {
       setBusy(false);
       setError("Opening Google… if the popup was blocked, you'll be redirected to finish signing in.");
       return;
     }
+
     setBusy(false);
-    if (result.error) {
-      setError(result.error);
-      return;
-    }
+    if (result.error) return setError(result.error);
+
     toast({
       type: "success",
       title: result.isNew ? "Account created!" : "Welcome back!",
-      message: `Signed in as ${result.user.username || result.user.name}`
+      message: `Signed in as ${result.user.username || result.user.name}`,
     });
   };
 
   return (
     <div className="container">
       <div className="state gate-card">
-        <div className="state-icon">
-          <GoogleIcon size={34} />
-        </div>
+        <div className="state-icon"><GoogleIcon size={34} /></div>
         <h3>{title}</h3>
         <p>{text}</p>
+
         <button className="google-btn" onClick={handleGoogle} disabled={busy}>
           <GoogleIcon />
           {busy ? "Signing in…" : "Continue with Google"}
         </button>
-        {error && (
-          <p className="field-error" role="alert">
-            {error}
-          </p>
-        )}
+
+        {error && <p className="field-error" role="alert">{error}</p>}
       </div>
     </div>
   );
