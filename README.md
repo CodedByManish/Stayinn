@@ -1,7 +1,7 @@
 # Stayinn
 
 <p align="center">
-  <img src="icon.png" alt="Stayinn Logo" width="80" />
+  <img src="public/icon.png" alt="Stayinn Logo" width="80" />
 </p>
 
 <p align="center">
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://stayinn-3a715.web.app">Live Demo</a>
+  <a href="https://stayinn.stayinn.workers.dev">Live Demo</a>
   &nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="https://github.com/CodedByManish/Stayinn">GitHub Repository</a>
 </p>
