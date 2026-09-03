@@ -1,4 +1,3 @@
-import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
 import React from "react";
 import Icon from "./icons.jsx";
 import { formatMoney, fmtShortDate, nightsBetween } from "../../utils.js";

@@ -1,4 +1,3 @@
-import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
 import React, { useEffect, useRef, useState } from "react";
 import Icon from "./icons.jsx";
 import { AMENITIES } from "../../data.js";

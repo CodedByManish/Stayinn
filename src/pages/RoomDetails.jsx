@@ -1,4 +1,3 @@
-import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
 import React, { useState } from "react";
 import Icon from "../components/icons.jsx";
 import { Rating, AmenityList, EmptyState } from "../components/components.jsx";

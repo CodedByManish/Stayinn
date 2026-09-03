@@ -1,7 +1,7 @@
 // Stayinn backend — Firebase Google auth, admin auth, bookings.
 // Self-contained Cloudflare Workers module. No imports.
 
-export const schema = `
+const schema = `
 CREATE TABLE IF NOT EXISTS users (
   user_id TEXT PRIMARY KEY,
   username TEXT,

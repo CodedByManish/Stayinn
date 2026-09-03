@@ -1,4 +1,3 @@
-import { jsxDEV } from "react/jsx-dev-runtime";
 import React from "react";
 import Icon from "./icons.jsx";
 import { PROPERTY } from "../../data.js";

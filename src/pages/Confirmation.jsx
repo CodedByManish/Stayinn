@@ -1,4 +1,3 @@
-import { jsxDEV } from "react/jsx-dev-runtime";
 import React, { useEffect, useState } from "react";
 import Icon from "../components/icons.jsx";
 import { EmptyState } from "../components/components.jsx";
