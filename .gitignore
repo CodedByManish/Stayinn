@@ -16,3 +16,6 @@ dist-ssr/
 .vscode/
 .idea/
 .DS_Store
+
+#firebase
+.firebase/
